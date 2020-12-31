@@ -45,7 +45,7 @@ gpio_set 505 value 1
 gpio_show_all
 sleep 1s
 gpio_bounce 506
-gpio_bounc 507
+gpio_bounce 507
 gpio_show_all
 gpio_unexport_all
 ```
