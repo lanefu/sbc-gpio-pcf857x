@@ -2,7 +2,7 @@
 GPIO scripts and examples for linux / Armbian, RPI alternatives using i2c [pcf8574](https://www.ti.com/product/PCF8574) IO Expander found in cheap GPIO breakout boards.
 
 ## background
-My personal use case was to make a uart and gpio control hat for a [https://www.loverpi.com/collections/tritium](Libre Computer Tritium H5) to control power for SBCs and collect consoles.
+My personal use case was to make a uart and gpio control hat for a [Libre Computer Tritium H5](https://www.loverpi.com/collections/tritium) to control power for SBCs and collect consoles.
 
 Because I wired relays to be normally closed.  Relay Off == power on, Relay On == power off.   My [shell library](lib/gpio.sh) functions reflect that use case.
 
@@ -51,8 +51,8 @@ gpio_unexport_all
 ```
 
 ## resources
-* (https://www.ti.com/product/PCF8574)
-* (https://elixir.bootlin.com/linux/v2.6.30/source/Documentation/i2c/chips/pcf8574)
-* (https://github.com/torvalds/linux/blob/master/Documentation/i2c/old-module-parameters.rst)
-* (https://www.waveshare.com/wiki/Raspberry_Pi_Tutorial_Series:_I2C)
+* https://www.ti.com/product/PCF8574
+* https://elixir.bootlin.com/linux/v2.6.30/source/Documentation/i2c/chips/pcf8574
+* https://github.com/torvalds/linux/blob/master/Documentation/i2c/old-module-parameters.rst
+* https://www.waveshare.com/wiki/Raspberry_Pi_Tutorial_Series:_I2C
 * [clicky demo video](https://www.youtube.com/watch?v=CRsYRhhzGEs)
