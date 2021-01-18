@@ -28,8 +28,9 @@ gpio_set_all() {
 gpio_init() {
 
 	gpio_export_all
-	gpio_set_all value 0
-	gpio_set_all direction out
+	sleep 1s;
+	gpio_set_all active_low 0
+	gpio_set_all direction high
 }
 
 gpio_set() {
@@ -40,25 +41,32 @@ gpio_set() {
 	echo "${value}" > "/sys/class/gpio/gpio${gpio}/${key}"
 }
 
+gpio_get() {
+
+	local gpio=$1
+	key=$2
+	echo "$(cat /sys/class/gpio/gpio${gpio}/${key})"
+}
+
 gpio_bounce() {
 
 	local gpio=$1
-	gpio_set ${gpio} value 1
-	sleep 5s
 	gpio_set ${gpio} value 0
+	sleep 5s
+	gpio_set ${gpio} value 1
 
 }
 
 gpio_show() {
 	
 	local gpio=$1
-	echo "GPIO: ${gpio} direction: $(cat /sys/class/gpio/gpio${gpio}/direction) value: $(cat /sys/class/gpio/gpio${gpio}/value)" 
+	echo "GPIO: ${gpio} active_low: $(cat /sys/class/gpio/gpio${gpio}/active_low) direction: $(cat /sys/class/gpio/gpio${gpio}/direction) value: $(cat /sys/class/gpio/gpio${gpio}/value)" 
 }
 
 gpio_show_all() {
 
 	for gpio in ${GPIOS}; do 
-		echo "GPIO: ${gpio} direction: $(cat /sys/class/gpio/gpio${gpio}/direction) value: $(cat /sys/class/gpio/gpio${gpio}/value)" 
+		gpio_show ${gpio}
 	done
 }
 
@@ -67,12 +75,12 @@ gpio_demo() {
 	gpio_init
 	gpio_show_all
 	for gpio in ${GPIOS}; do
-		gpio_set ${gpio} value 1
+		gpio_set ${gpio} value 0
 		sleep 0.5s
 	done
 	gpio_show_all
 	for gpio in ${GPIOS}; do
-		gpio_set ${gpio} value 0
+		gpio_set ${gpio} value 1
 		sleep 0.5s
 	done
 	gpio_show_all
