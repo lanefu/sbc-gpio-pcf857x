@@ -1,6 +1,8 @@
 FIRST_GPIO=504
 LAST_GPIO=511
 GPIOS=$(seq ${FIRST_GPIO} ${LAST_GPIO})
+OFF_VALUE=0
+ON_VALUE=1
 
 gpio_export_all() {
 
@@ -48,13 +50,32 @@ gpio_get() {
 	echo "$(cat /sys/class/gpio/gpio${gpio}/${key})"
 }
 
+
+gpio_off() {
+
+	local gpio=$1
+	gpio_set ${gpio} value ${OFF_VALUE}
+}
+
+gpio_on() {
+
+	local gpio=$1
+	gpio_set ${gpio} value ${ON_VALUE}
+}
+
 gpio_bounce() {
 
 	local gpio=$1
-	gpio_set ${gpio} value 0
+	gpio_off ${gpio}
 	sleep 5s
-	gpio_set ${gpio} value 1
+	gpio_on ${gpio}
+}
 
+gpio_bounce_all() {
+
+	for gpio in ${GPIOS}; do 
+		gpio_bounce ${gpio}
+	done
 }
 
 gpio_show() {
@@ -75,12 +96,12 @@ gpio_demo() {
 	gpio_init
 	gpio_show_all
 	for gpio in ${GPIOS}; do
-		gpio_set ${gpio} value 0
+		gpio_set ${gpio} value ${OFF_VALUE}
 		sleep 0.5s
 	done
 	gpio_show_all
 	for gpio in ${GPIOS}; do
-		gpio_set ${gpio} value 1
+		gpio_set ${gpio} value ${ON_VALUE}
 		sleep 0.5s
 	done
 	gpio_show_all
