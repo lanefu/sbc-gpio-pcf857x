@@ -27,7 +27,7 @@ modprobe gpio-pcf857x
 echo pcf8574 0x38 > sys/bus/i2c/devices/i2c-0/new_device
 ```
 
-### example
+### example - bash
 
 requires running as root....
 
@@ -49,6 +49,60 @@ gpio_bounce 507
 gpio_show_all
 gpio_unexport_all
 ```
+
+### example - python
+
+Running on [Orange Pi PC](https://www.armbian.com/orange-pi-pc/); with 2 LEDs on gpio 12 and 13
+
+```sh
+sudo python3 lib/api.py -c /dev/gpiochip0 -l 12 13
+```
+
+Then, on the same device
+
+```sh
+curl localhost:5000/on
+curl localhost:5000/off
+```
+
+Or form an other device on the same network
+
+```sh
+curl orangepipc.local:5000/12/toggle
+curl orangepipc.local:5000/13/bounce
+curl orangepipc.local:5000/toggle
+curl -s orangepipc.local:5000/state | jq
+```
+
+```json
+{
+  "12": {
+    "active": "high",
+    "direction": "output",
+    "value": 0
+  },
+  "13": {
+    "active": "high",
+    "direction": "output",
+    "value": 1
+  }
+}
+```
+
+```sh
+curl orangepipc.local:5000/13/toggle
+curl -s orangepipc.local:5000/13/state | jq
+```
+
+```json
+{
+  "active": "high",
+  "direction": "output",
+  "value": 0
+}
+```
+
+routes */gpio-num/#* impacts a single gpio while */#* impacts all configured lines
 
 ## resources
 * https://www.ti.com/product/PCF8574
